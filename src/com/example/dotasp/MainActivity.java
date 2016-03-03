@@ -48,23 +48,24 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		listview = (ListView) findViewById(R.id.listviewApp);
 		mlistAppInfo = new ArrayList<AppInfo>();
-		queryAppInfo(); // ²éÑ¯ËùÓÐÓ¦ÓÃ³ÌÐòÐÅÏ¢
+		queryAppInfo(); // ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		BrowseApplicationInfoAdapter browseAppAdapter = new BrowseApplicationInfoAdapter(this, mlistAppInfo);
 		listview.setAdapter(browseAppAdapter);
 		listview.setOnItemClickListener(this);
 	}
 
 	private void createFloatView() {
-		// »ñÈ¡LayoutParams¶ÔÏó
+		// ï¿½ï¿½È¡LayoutParamsï¿½ï¿½ï¿½ï¿½
 		wmParams = new WindowManager.LayoutParams();
 
-		// »ñÈ¡µÄÊÇLocalWindowManager¶ÔÏó
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½LocalWindowManagerï¿½ï¿½ï¿½ï¿½
+		
 		mWindowManager =  (WindowManager)getApplication().getSystemService(getApplication().WINDOW_SERVICE);  
 		Log.i(TAG, "mWindowManager1--->" + this.getWindowManager());
 		// mWindowManager = getWindow().getWindowManager();
 		Log.i(TAG, "mWindowManager2--->" + getWindow().getWindowManager());
 
-		// »ñÈ¡µÄÊÇCompatModeWrapper¶ÔÏó
+		// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½CompatModeWrapperï¿½ï¿½ï¿½ï¿½
 		// mWindowManager = (WindowManager)
 		// getApplication().getSystemService(Context.WINDOW_SERVICE);
 		Log.i(TAG, "mWindowManager3--->" + mWindowManager);
@@ -88,21 +89,21 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Log.i(TAG, "mFloatView" + mFloatView);
 		Log.i(TAG, "mFloatView--parent-->" + mFloatView.getParent());
 		Log.i(TAG, "mFloatView--parent--parent-->" + mFloatView.getParent().getParent());
-		// °ó¶¨´¥ÃþÒÆ¶¯¼àÌý
+		// ï¿½ó¶¨´ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
 		mFloatView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
 				wmParams.x = (int) event.getRawX() - mFloatLayout.getWidth() / 2;
-				// 25Îª×´Ì¬À¸¸ß¶È
+				// 25Îª×´Ì¬ï¿½ï¿½ï¿½ß¶ï¿½
 				wmParams.y = (int) event.getRawY() - mFloatLayout.getHeight() / 2 - 40;
 				mWindowManager.updateViewLayout(mFloatLayout, wmParams);
 				return false;
 			}
 		});
 
-		// °ó¶¨µã»÷¼àÌý
+		// ï¿½ó¶¨µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		mFloatView.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -110,12 +111,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				// TODO Auto-generated method stub
 //				Intent intent = new Intent(FloatWindowTest.this, ResultActivity.class);
 //				startActivity(intent);
+				SpUtils spUtils=new SpUtils();
+				spUtils.loginAccount(getApplicationContext());
 			}
 		});
 
 	}
 
-	// µã»÷Ìø×ªÖÁ¸ÃÓ¦ÓÃ³ÌÐò
+	// ï¿½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½
 	public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
 		// TODO Auto-generated method stub
 		createFloatView();
@@ -123,33 +126,33 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		startActivity(intent);
 	}
 
-	// »ñµÃËùÓÐÆô¶¯ActivityµÄÐÅÏ¢£¬ÀàËÆÓÚLaunch½çÃæ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Activityï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Launchï¿½ï¿½ï¿½ï¿½
 	public void queryAppInfo() {	
-		PackageManager pm = this.getPackageManager(); // »ñµÃPackageManager¶ÔÏó
+		PackageManager pm = this.getPackageManager(); // ï¿½ï¿½ï¿½PackageManagerï¿½ï¿½ï¿½ï¿½
 		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		// Í¨¹ý²éÑ¯£¬»ñµÃËùÓÐResolveInfo¶ÔÏó.
-		List<ResolveInfo> resolveInfos = pm.queryIntentActivities(mainIntent, PackageManager.MATCH_DEFAULT_ONLY);
-		// µ÷ÓÃÏµÍ³ÅÅÐò £¬ ¸ù¾ÝnameÅÅÐò
-		// ¸ÃÅÅÐòºÜÖØÒª£¬·ñÔòÖ»ÄÜÏÔÊ¾ÏµÍ³Ó¦ÓÃ£¬¶ø²»ÄÜÁÐ³öµÚÈý·½Ó¦ÓÃ³ÌÐò
+		// Í¨ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ResolveInfoï¿½ï¿½ï¿½ï¿½.
+		List<ResolveInfo> resolveInfos = pm.queryIntentActivities(mainIntent, PackageManager.GET_PERMISSIONS);
+		// ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½nameï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Ê¾ÏµÍ³Ó¦ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð³ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½
 		Collections.sort(resolveInfos, new ResolveInfo.DisplayNameComparator(pm));
 		if (mlistAppInfo != null) {
 			mlistAppInfo.clear();
 			for (ResolveInfo reInfo : resolveInfos) {
-				String activityName = reInfo.activityInfo.name; // »ñµÃ¸ÃÓ¦ÓÃ³ÌÐòµÄÆô¶¯ActivityµÄname
-				String pkgName = reInfo.activityInfo.packageName; // »ñµÃÓ¦ÓÃ³ÌÐòµÄ°üÃû
-				String appLabel = (String) reInfo.loadLabel(pm); // »ñµÃÓ¦ÓÃ³ÌÐòµÄLabel
-				Drawable icon = reInfo.loadIcon(pm); // »ñµÃÓ¦ÓÃ³ÌÐòÍ¼±ê
-				// ÎªÓ¦ÓÃ³ÌÐòµÄÆô¶¯Activity ×¼±¸Intent
+				String activityName = reInfo.activityInfo.name; // ï¿½ï¿½Ã¸ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Activityï¿½ï¿½name
+				String pkgName = reInfo.activityInfo.packageName; // ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½
+				String appLabel = (String) reInfo.loadLabel(pm); // ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½Label
+				Drawable icon = reInfo.loadIcon(pm); // ï¿½ï¿½ï¿½Ó¦ï¿½Ã³ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
+				// ÎªÓ¦ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Activity ×¼ï¿½ï¿½Intent
 				Intent launchIntent = new Intent();
 				launchIntent.setComponent(new ComponentName(pkgName, activityName));
-				// ´´½¨Ò»¸öAppInfo¶ÔÏó£¬²¢¸³Öµ
+				// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½AppInfoï¿½ï¿½ï¿½ó£¬²ï¿½ï¿½ï¿½Öµ
 				AppInfo appInfo = new AppInfo();
 				appInfo.setAppLabel(appLabel);
 				appInfo.setPkgName(pkgName);
 				appInfo.setAppIcon(icon);
 				appInfo.setIntent(launchIntent);
-				mlistAppInfo.add(appInfo); // Ìí¼ÓÖÁÁÐ±íÖÐ
+				mlistAppInfo.add(appInfo); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½
 			}
 		}
 	}

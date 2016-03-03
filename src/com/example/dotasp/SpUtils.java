@@ -8,37 +8,51 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import android.content.Context;
+import android.util.Log;
+import android.view.WindowManager;
+
 public class SpUtils {
-//	execShellCmd("input keyevent 3");//home  //µã»÷home¼ü
-//	execShellCmd("input text  'helloworld!' ");//ÊäÈëÎÄ×Ö  
-//	execShellCmd("input tap 168 252");  //µã»÷ÆÁÄ»
-//	execShellCmd("input swipe 100 250 200 280"); //»¬¶¯ÆÁÄ» 
+	// execShellCmd("input keyevent 3");//home //ï¿½ï¿½ï¿½homeï¿½ï¿½
+	// execShellCmd("input text  'helloworld!' ");//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// execShellCmd("input tap 168 252"); //ï¿½ï¿½ï¿½ï¿½ï¿½Ä»
+	// execShellCmd("input swipe 100 250 200 280"); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»
 	public void editUserNameAndPassword(HashMap<String, String> map) {
 		Set<Entry<String, String>> set = map.entrySet();
 		Iterator<Entry<String, String>> iterator = set.iterator();
 		while (iterator.hasNext()) {
-			Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator.next();
+			Map.Entry<String, String> entry = (Map.Entry<String, String>) iterator
+					.next();
 			String key = entry.getKey();
 			String value = entry.getValue();
-			//execShellCmd("input text'"+key+"'");
-			//execShellCmd("input text'"+value+"'");
+			// execShellCmd("input text'"+key+"'");
+			// execShellCmd("input text'"+value+"'");
 
 		}
 	}
+
 	/**
-	 * µÇÂ¼ÕËºÅ
+	 * ï¿½ï¿½Â¼ï¿½Ëºï¿½
 	 */
-	public void loginAccount(){
-		execShellCmd("input tap 168 252");  
+	public void loginAccount(Context context) {
+		WindowManager wm = (WindowManager) context
+				.getSystemService(Context.WINDOW_SERVICE);
+
+		int width = wm.getDefaultDisplay().getWidth();
+		int height = wm.getDefaultDisplay().getHeight();
+		Log.i("width", "" + width);
+		Log.i("height", "" + height);
+		execShellCmd("input tap 660 300"); //loginAcount
 	}
 
 	public void execShellCmd(String cmd) {
 		try {
-			// ÉêÇë»ñÈ¡rootÈ¨ÏÞ£¬ÕâÒ»²½ºÜÖØÒª£¬²»È»»áÃ»ÓÐ×÷ÓÃ
+			// ï¿½ï¿½ï¿½ï¿½ï¿½È¡rootÈ¨ï¿½Þ£ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			Process process = Runtime.getRuntime().exec("su");
-			// »ñÈ¡Êä³öÁ÷
+			// ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½
 			OutputStream outputStream = process.getOutputStream();
-			DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+			DataOutputStream dataOutputStream = new DataOutputStream(
+					outputStream);
 			dataOutputStream.writeBytes(cmd);
 			dataOutputStream.flush();
 			dataOutputStream.close();
